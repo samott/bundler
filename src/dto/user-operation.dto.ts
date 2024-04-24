@@ -32,7 +32,7 @@ export class UserOperationDto {
 	verificationGasLimit: string;
 
 	@IsHexData()
-	preVerificationGasLimit: string;
+	preVerificationGas: string;
 
 	@IsHexData()
 	preVerificationGas: string;
