@@ -6,8 +6,8 @@ import {
 	Abi,
 } from 'viem';
 
-import erc4337Abi from './abis/erc4337.json';
-import entryPointAbi from './abis/entry-point.json';
+import * as erc4337Abi from './abis/erc4337.json';
+import * as entryPointAbi from './abis/entry-point.json';
 
 import { ViemService } from './viem.service';
 
