@@ -25,10 +25,13 @@ export class BlockchainService {
 		const txHash = await this.viemService.writeContract({
 			address: this.viemService.getEntryPoint(),
 			abi: erc4337Abi as Abi,
-			functionName: 'entryPoint',
+			functionName: 'handleOps',
 			account: this.viemService.getAccount(),
 			chain: this.viemService.getChain(),
-			args: userOperations
+			args: [
+				userOperations,
+				this.viemService.getBeneficiary()
+			]
 		});
 
 		const receipt = await this.viemService.waitForTransactionReceipt({

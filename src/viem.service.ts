@@ -72,6 +72,10 @@ export class ViemService {
 		return this.configService.get<string>('onChain.entryPoint') as Hex;
 	}
 
+	getBeneficiary() : Hex {
+		return this.configService.get<string>('onChain.beneficiary') as Hex;
+	}
+
 	getChain() {
 		return sepolia;
 	}
