@@ -8,6 +8,7 @@ import {
 	publicActions,
 	http,
 	Hex,
+	Account,
 	ReadContractParameters,
     ReadContractReturnType,
 	WriteContractParameters,
@@ -26,7 +27,7 @@ import {
 export class ViemService {
 	constructor(
 		private readonly configService: ConfigService
-	) { }
+	) {}
 
 	async readContract(
 		params: ReadContractParameters
@@ -62,9 +63,13 @@ export class ViemService {
 		return client.waitForTransactionReceipt(params);
 	}
 
-	getAccount() {
+	getAccount() : Account {
 		const privateKey = this.configService.get<string>('onChain.privateKey') as Hex;
 		return privateKeyToAccount(privateKey);
+	}
+
+	getEntryPoint() : Hex {
+		return this.configService.get<string>('onChain.entryPoint') as Hex;
 	}
 
 	getChain() {
