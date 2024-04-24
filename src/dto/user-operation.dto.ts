@@ -1,7 +1,4 @@
 import {
-	IsInt,
-	IsNumberString,
-	IsHexadecimal,
 	IsEthereumAddress,
 	IsString,
 	IsArray,
@@ -65,11 +62,6 @@ export class JsonRpcUserOperationDto {
 	params: UserOperationDto[];
 }
 
-export class JsonRpcUserOperationResultDto {
-	txHash: string;
-	receipt: TransactionReceipt;
-}
-
 export class JsonRpcResponseDto {
 	@IsString()
 	@Equals('2.0')
@@ -79,5 +71,5 @@ export class JsonRpcResponseDto {
 	@Equals('eth_sendUserOperation')
 	method: string;
 
-	result: JsonRpcUserOperationResultDto;
+	result: TransactionReceipt;
 }
