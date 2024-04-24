@@ -1,90 +1,38 @@
 import { Injectable } from '@nestjs/common';
 
 import {
-	Account,
 	Address,
 	TransactionReceipt,
+	Abi,
 } from 'viem';
 
 import erc4337Abi from './abis/erc4337.json';
+import entryPointAbi from './abis/entry-point.json';
+
+import { ViemService } from './viem.service';
 
 import { UserOperationDto } from './dto/user-operation.dto';
-
-import {
-	ReadContractParameters,
-	ReadContractReturnType,
-	WriteContractParameters,
-	WriteContractReturnType,
-	WaitForTransactionReceiptParameters,
-	WaitForTransactionReceiptReturnType,
-	Chain,
-	Abi,
-	ContractFunctionName,
-	ContractFunctionArgs,
-} from 'viem';
-
-type IViemClient = {
-	readContract<
-		chain extends Chain | undefined,
-		const abi extends Abi | readonly unknown[],
-		functionName extends ContractFunctionName<abi, 'pure' | 'view'>,
-		const args extends ContractFunctionArgs<abi, 'pure' | 'view', functionName>,
-	>(
-		parameters: ReadContractParameters<abi, functionName, args>,
-	) : Promise<ReadContractReturnType<abi, functionName, args>>;
-
-	writeContract<
-		chain extends Chain | undefined,
-		account extends Account | undefined,
-		const abi extends Abi | readonly unknown[],
-		functionName extends ContractFunctionName<abi, 'nonpayable' | 'payable'>,
-		args extends ContractFunctionArgs<
-			abi,
-			'nonpayable' | 'payable',
-			functionName
-		>,
-		chainOverride extends Chain | undefined,
-	>(
-		parameters: WriteContractParameters<
-			abi,
-			functionName,
-			args,
-			chain,
-			account,
-			chainOverride
-		>,
-	) : Promise<WriteContractReturnType>;
-
-	waitForTransactionReceipt<
-		TChain extends Chain | undefined,
-	>(
-		params: WaitForTransactionReceiptParameters<TChain>
-	) : Promise<WaitForTransactionReceiptReturnType<TChain>>
-
-	chain: Chain;
-};
 
 @Injectable()
 export class BlockchainService {
 	constructor(
-		readonly client: IViemClient,
-		readonly account: Account,
+		readonly viemService: ViemService,
 	) {};
 
 	async sendUserOperations(
 		userOperations: UserOperationDto[],
 		entryPoint: Address
 	) : Promise<TransactionReceipt> {
-		const txHash = await this.client.writeContract({
+		const txHash = await this.viemService.writeContract({
 			address: entryPoint,
-			abi: erc4337Abi,
+			abi: erc4337Abi as Abi,
 			functionName: 'entryPoint',
-			account: this.account,
-			chain: this.client.chain,
+			account: this.viemService.getAccount(),
+			chain: this.viemService.getChain(),
 			args: userOperations
 		});
 
-		const receipt = await this.client.waitForTransactionReceipt({
+		const receipt = await this.viemService.waitForTransactionReceipt({
 			hash: txHash
 		});
 
