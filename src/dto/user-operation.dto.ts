@@ -11,6 +11,8 @@ import {
 
 import { Type } from 'class-transformer';
 
+import { TransactionReceipt } from 'viem';
+
 import { IsHexData } from '../decorators/is-hex-data.decorator';
 
 export class UserOperationDto {
@@ -63,6 +65,11 @@ export class JsonRpcUserOperationDto {
 	params: UserOperationDto[];
 }
 
+export class JsonRpcUserOperationResultDto {
+	txHash: string;
+	receipt: TransactionReceipt;
+}
+
 export class JsonRpcResponseDto {
 	@IsString()
 	@Equals('2.0')
@@ -71,4 +78,6 @@ export class JsonRpcResponseDto {
 	@IsString()
 	@Equals('eth_sendUserOperation')
 	method: string;
+
+	result: JsonRpcUserOperationResultDto;
 }
