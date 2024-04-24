@@ -36,7 +36,6 @@ export class IsHexDataValidator implements ValidatorConstraintInterface {
 
 		const [options] = args.constraints;
 
-
 		const disallowEmpty = options !== undefined
 				&& options && typeof options == 'object'
 			? options.disallowEmpty ?? false
