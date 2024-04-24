@@ -20,7 +20,6 @@ import config from './config';
 	controllers: [AppController],
 	providers: [
 		IsHexDataValidator,
-		AppService
 	],
 })
 export class AppModule {}
