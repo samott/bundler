@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
 import {
-	createPublicClient,
-	createWalletClient,
 	Account,
 	Address,
 	TransactionReceipt,
