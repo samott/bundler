@@ -1,11 +1,10 @@
-import { Injectable, UnprocessableEntityException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 import {
 	registerDecorator,
 	ValidatorConstraint,
-	ValidationOptions,
 	ValidatorConstraintInterface,
-    ValidationArguments
+	ValidationArguments,
 } from 'class-validator';
 
 export type IsHexDataOptions = {
