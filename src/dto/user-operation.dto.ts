@@ -8,47 +8,46 @@ import {
 
 import { Transform, Type } from 'class-transformer';
 
-import { TransactionReceipt, Hex } from 'viem';
+import { TransactionReceipt, Address, Hex } from 'viem';
 
 import { IsHexData } from '../decorators/is-hex-data.decorator';
 
 export class UserOperationDto {
 	@IsEthereumAddress()
-	sender: string;
+	sender: Address;
 
 	@IsHexData({ disallowEmpty: true })
 	@Transform(v => BigInt(v.value))
-	nonce: string;
+	nonce: BigInt;
 
 	@IsHexData()
-	initCode: string;
+	initCode: Hex;
 
 	@IsHexData()
 	callData: string;
 
 	@IsHexData()
 	@Transform(v => BigInt(v.value))
-	callGasLimit: string;
+	callGasLimit: bigint;
 
 	@IsHexData()
 	@Transform(v => BigInt(v.value))
-	verificationGasLimit: string;
+	verificationGasLimit: bigint;
 
 	@IsHexData()
 	@Transform(v => BigInt(v.value))
-	preVerificationGas: string;
+	preVerificationGas: bigint;
 
 	@IsHexData()
 	@Transform(v => BigInt(v.value))
-	maxFeePerGas: string;
+	maxFeePerGas: bigint;
 
 	@IsHexData()
 	@Transform(v => BigInt(v.value))
-	maxPriorityFeePerGas: string;
+	maxPriorityFeePerGas: bigint;
 
 	@IsHexData()
-	@Transform(v => BigInt(v.value))
-	paymasterAndData: string;
+	paymasterAndData: Hex;
 
 	@IsHexData({ disallowEmpty: true })
 	signature: string;
