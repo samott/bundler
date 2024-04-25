@@ -6,9 +6,9 @@ import {
 	ValidateNested,
 } from 'class-validator';
 
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 
-import { TransactionReceipt } from 'viem';
+import { TransactionReceipt, Hex } from 'viem';
 
 import { IsHexData } from '../decorators/is-hex-data.decorator';
 
@@ -17,6 +17,7 @@ export class UserOperationDto {
 	sender: string;
 
 	@IsHexData({ disallowEmpty: true })
+	@Transform(v => BigInt(v.value))
 	nonce: string;
 
 	@IsHexData()
@@ -26,22 +27,28 @@ export class UserOperationDto {
 	callData: string;
 
 	@IsHexData()
+	@Transform(v => BigInt(v.value))
 	callGasLimit: string;
 
 	@IsHexData()
+	@Transform(v => BigInt(v.value))
 	verificationGasLimit: string;
 
 	@IsHexData()
+	@Transform(v => BigInt(v.value))
 	preVerificationGas: string;
 
 	@IsHexData()
-	preVerificationGas: string;
-
-	@IsHexData()
+	@Transform(v => BigInt(v.value))
 	maxFeePerGas: string;
 
 	@IsHexData()
+	@Transform(v => BigInt(v.value))
 	maxPriorityFeePerGas: string;
+
+	@IsHexData()
+	@Transform(v => BigInt(v.value))
+	paymasterAndData: string;
 
 	@IsHexData({ disallowEmpty: true })
 	signature: string;
