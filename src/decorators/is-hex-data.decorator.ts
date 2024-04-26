@@ -43,6 +43,9 @@ export class IsHexDataValidator implements ValidatorConstraintInterface {
 		if (value === null || value === undefined)
 			return false;
 
+		if (typeof value == 'bigint')
+			return true;
+
 		if (typeof value == 'number' && Number.isInteger(value))
 			return true;
 
@@ -53,10 +56,10 @@ export class IsHexDataValidator implements ValidatorConstraintInterface {
 			return true;
 
 		if (disallowEmpty) {
-			if (/^0x[A-Za-z0-9]{1,}$/.test(value))
+			if (/^0x[A-Za-f0-9]{1,}$/.test(value))
 				return true;
 		} else {
-			if (/^0x[A-Za-z0-9]{0,}$/.test(value))
+			if (/^0x[A-Za-f0-9]{0,}$/.test(value))
 				return true;
 		}
 

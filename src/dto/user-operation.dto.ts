@@ -1,5 +1,6 @@
 import {
 	IsEthereumAddress,
+	IsDefined,
 	IsString,
 	IsArray,
 	Equals,
@@ -13,44 +14,49 @@ import { TransactionReceipt, Address, Hex } from 'viem';
 import { IsHexData } from '../decorators/is-hex-data.decorator';
 
 export class UserOperationDto {
+	@IsDefined()
 	@IsEthereumAddress()
 	sender: Address;
 
-	@IsHexData({ disallowEmpty: true })
+	@IsDefined()
 	@Transform(v => BigInt(v.value))
-	nonce: BigInt;
+	nonce: bigint;
 
+	@IsDefined()
 	@IsHexData()
 	initCode: Hex;
 
+	@IsDefined()
 	@IsHexData()
-	callData: string;
+	callData: Hex;
 
-	@IsHexData()
+	@IsDefined()
 	@Transform(v => BigInt(v.value))
 	callGasLimit: bigint;
 
-	@IsHexData()
+	@IsDefined()
 	@Transform(v => BigInt(v.value))
 	verificationGasLimit: bigint;
 
-	@IsHexData()
+	@IsDefined()
 	@Transform(v => BigInt(v.value))
 	preVerificationGas: bigint;
 
-	@IsHexData()
+	@IsDefined()
 	@Transform(v => BigInt(v.value))
 	maxFeePerGas: bigint;
 
-	@IsHexData()
+	@IsDefined()
 	@Transform(v => BigInt(v.value))
 	maxPriorityFeePerGas: bigint;
 
+	@IsDefined()
 	@IsHexData()
 	paymasterAndData: Hex;
 
+	@IsDefined()
 	@IsHexData({ disallowEmpty: true })
-	signature: string;
+	signature: Hex;
 }
 
 export class JsonRpcUserOperationDto {
