@@ -40,6 +40,7 @@ export class JsonRpcExceptionFilter implements ExceptionFilter {
 			.status(status)
 			.json({
 				jsonrpc: "2.0",
+				...( request?.body?.id ? { id: request.body.id } : null ),
 				error: {
 					code,
 					error,
