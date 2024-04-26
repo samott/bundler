@@ -26,11 +26,27 @@ export class BlockchainService {
 	) : Promise<Hex> {
 		this.logger.log('Forwarding user operations...', userOperations);
 
+		const account = this.viemService.getAccount();
+
+		// Check the transaction will run and also that
+		// our EOA account has the requisite gas level
+		await this.viemService.estimateContractGas({
+			address: this.viemService.getEntryPoint(),
+			abi: erc4337Abi as Abi,
+			functionName: 'handleOps',
+			account,
+			chain: this.viemService.getChain(),
+			args: [
+				userOperations,
+				this.viemService.getBeneficiary()
+			]
+		});
+
 		const txHash = await this.viemService.writeContract({
 			address: this.viemService.getEntryPoint(),
 			abi: erc4337Abi as Abi,
 			functionName: 'handleOps',
-			account: this.viemService.getAccount(),
+			account,
 			chain: this.viemService.getChain(),
 			args: [
 				userOperations,

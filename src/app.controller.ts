@@ -1,4 +1,7 @@
-import { BaseError } from 'viem';
+import {
+	BaseError,
+	ContractFunctionExecutionError,
+} from 'viem';
 
 import { Logger } from '@nestjs/common';
 
@@ -10,8 +13,6 @@ import {
 	InternalServerErrorException,
 	BadRequestException,
 } from '@nestjs/common';
-
-import { ConfigService } from '@nestjs/config';
 
 import { BlockchainService } from './blockchain.service';
 
@@ -52,8 +53,11 @@ export class AppController {
 		} catch (e) {
 			this.logger.warn(e);
 
-			if (e instanceof BaseError)
+			if (e instanceof ContractFunctionExecutionError && e.cause?.details == "insufficient funds for transfer") {
+				throw new InternalServerErrorException('Insufficient bundler funds');
+			} else if (e instanceof BaseError) {
 				throw new BadRequestException(e.shortMessage);
+			}
 			throw new InternalServerErrorException('Internal error');
 		}
 	}
