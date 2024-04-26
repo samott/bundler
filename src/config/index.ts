@@ -10,7 +10,7 @@ const ConfigSchema = Joi.object({
 	}).required(),
 	onChain: Joi.object({
 		entryPoint: Joi.string().regex(/^0x[a-fA-F0-9]{40}$/).required(),
-		privateKey: Joi.string().regex(/^0x[a-fA-F0-9]{64}$/).required(),
+		privateKeys: Joi.array().min(1).items(Joi.string().regex(/^0x[a-fA-F0-9]{64}$/).required()),
 		beneficiary: Joi.string().regex(/^0x[a-fA-F0-9]{40}$/).required(),
 	}).required(),
 	test: Joi.object({

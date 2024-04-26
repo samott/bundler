@@ -75,8 +75,9 @@ export class ViemService {
 	}
 
 	getAccount() : Account {
-		const privateKey = this.configService.get<string>('onChain.privateKey') as Hex;
-		return privateKeyToAccount(privateKey);
+		const privateKeys = this.configService.get<Hex[]>('onChain.privateKeys');
+		const index = Math.floor(Math.random() * privateKeys.length);
+		return privateKeyToAccount(privateKeys[index]);
 	}
 
 	getEntryPoint() : Hex {
