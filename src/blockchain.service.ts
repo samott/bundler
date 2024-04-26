@@ -43,7 +43,7 @@ export class BlockchainService {
 
 	async getNonce(
 		address: Address,
-	) : Promise<BigInt> {
+	) : Promise<bigint> {
 		const nonce = await this.viemService.readContract({
 			address: this.viemService.getEntryPoint(),
 			abi: entryPointAbi as Abi,
@@ -51,6 +51,6 @@ export class BlockchainService {
 			args: [ address, 0n ]
 		});
 
-		return nonce as BigInt;
+		return nonce as bigint;
 	}
 }
