@@ -34,6 +34,7 @@
     "viem": "^2.9.26"
   },
   "devDependencies": {
+    "@biconomy/account": "^4.1.1",
     "@nestjs/cli": "^10.0.0",
     "@nestjs/schematics": "^10.0.0",
     "@nestjs/testing": "^10.0.0",
@@ -62,7 +63,7 @@
       "json",
       "ts"
     ],
-	"testTimeout": 30000,
+    "testTimeout": 90000,
     "rootDir": "src",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
