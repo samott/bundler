@@ -1,9 +1,17 @@
-import { ExceptionFilter, Catch, ArgumentsHost, HttpException } from '@nestjs/common';
+import {
+	ExceptionFilter,
+	Catch,
+	ArgumentsHost,
+	HttpException,
+	BadRequestException,
+} from '@nestjs/common';
+
 import { Request, Response } from 'express';
 
 import { Logger } from '@nestjs/common';
 
 const JsonRpcErrors = {
+	InvalidRequest: -32600,
 	ParseError: -32700,
 	InternalError: -32603,
 } as const;
@@ -20,13 +28,21 @@ export class JsonRpcExceptionFilter implements ExceptionFilter {
 
 		this.logger.warn(exception);
 
+		const code = (exception instanceof BadRequestException)
+			? JsonRpcErrors.InvalidRequest
+			: JsonRpcErrors.InternalError
+
+		const error = (exception instanceof BadRequestException)
+			? 'Invalid request'
+			: 'Internal error';
+
 		response
 			.status(status)
 			.json({
 				jsonrpc: "2.0",
 				error: {
-					code: JsonRpcErrors.InternalError,
-					error: "Error",
+					code,
+					error,
 					details: JSON.stringify(
 						exception.getResponse()
 							?? 'Unknown error'
