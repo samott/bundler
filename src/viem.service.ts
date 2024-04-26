@@ -9,6 +9,7 @@ import {
 	http,
 	Hex,
 	Account,
+	FeeValues,
 	ReadContractParameters,
     ReadContractReturnType,
 	WriteContractParameters,
@@ -61,6 +62,16 @@ export class ViemService {
 		}).extend(publicActions);
 
 		return client.waitForTransactionReceipt(params);
+	}
+
+	async getGasFees() : Promise<FeeValues> {
+		const client = createPublicClient({
+			chain: sepolia,
+			transport: http(),
+		});
+
+		const feeData = await client.estimateFeesPerGas();
+		return feeData;
 	}
 
 	getAccount() : Account {
