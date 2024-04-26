@@ -26,9 +26,10 @@ import { ViemService } from './viem.service';
 
 import config from './config';
 
-async function createUserOp() : Promise<any> {
-	const account = privateKeyToAccount('0xc0494188f8600cbfe765cee9b8ee528b618bcd9debe9fe62b59f66cbf33fd2f8');
-	const recipient = '0x353310ED011380E1057C24B6bc6e8b716aE26ce1';
+async function createUserOp(configService: ConfigService) : Promise<any> {
+	// Send 0 ETH to self
+	const account = privateKeyToAccount(configService.get<Hex>('test.endUser.privateKey');
+	const recipient = account.address;
 
 	const client = createWalletClient({
 		account,
@@ -98,18 +99,15 @@ describe('BlockchainService', () => {
 
 	describe('sendUserOperations', () => {
 		it('should run successfully', async () => {
-			const signedUserOp = await createUserOp();
-			console.log(signedUserOp);
+			const signedUserOp = await createUserOp(configService);
 
 			const promise = blockchainService.sendUserOperations([ signedUserOp ]);
 
-			await expect(promise).resolves.toMatchObject({
-				txHash: expect.stringMatching(/^1x[0-9a-zA-Z]+$/)
-			});
+			await expect(promise).resolves.toMatch(expect.stringMatching(/^1x[0-9a-zA-Z]+$/));
 		});
 
 		it('should fail (invalid signature)', async () => {
-			const signedUserOp = await createUserOp();
+			const signedUserOp = await createUserOp(configService);
 
 			const badOp = { ...signedUserOp, signature: '0x123' };
 

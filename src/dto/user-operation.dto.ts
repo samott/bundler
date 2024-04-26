@@ -64,6 +64,9 @@ export class JsonRpcUserOperationDto {
 	@Equals('2.0')
 	jsonrpc: string;
 
+	@IsDefined()
+	id: string|number;
+
 	@IsString()
 	@Equals('eth_sendUserOperation')
 	method: string;
@@ -79,9 +82,17 @@ export class JsonRpcResponseDto {
 	@Equals('2.0')
 	jsonrpc: string;
 
+	@IsDefined()
+	id: string|number;
+
 	@IsString()
 	@Equals('eth_sendUserOperation')
 	method: string;
 
-	result: TransactionReceipt;
+	result: UserOperationResultDto;
 }
+
+export class UserOperationResultDto {
+	txHash: Hex;
+	status: string;
+};

@@ -2,8 +2,8 @@ import { Injectable, Logger } from '@nestjs/common';
 
 import {
 	Address,
-	TransactionReceipt,
 	Abi,
+	Hex,
 } from 'viem';
 
 import * as erc4337Abi from './abis/erc4337.json';
@@ -23,7 +23,7 @@ export class BlockchainService {
 
 	async sendUserOperations(
 		userOperations: UserOperationDto[],
-	) : Promise<TransactionReceipt> {
+	) : Promise<Hex> {
 		this.logger.log('Forwarding user operations...', userOperations);
 
 		const txHash = await this.viemService.writeContract({
@@ -34,15 +34,11 @@ export class BlockchainService {
 			chain: this.viemService.getChain(),
 			args: [
 				userOperations,
-				this.viemService.getBeneficiary()
+				'0x962718024f19A40959Dc25f1546216b3293F1DA1'
 			]
 		});
 
-		const receipt = await this.viemService.waitForTransactionReceipt({
-			hash: txHash
-		});
-
-		return receipt;
+		return txHash;
 	}
 
 	async getNonce(

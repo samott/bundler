@@ -28,7 +28,6 @@ export class AppController {
 	private readonly logger = new Logger(AppController.name);
 
 	constructor(
-		private readonly configService: ConfigService,
 		private readonly blockchainService: BlockchainService
 	) {}
 
@@ -37,14 +36,18 @@ export class AppController {
 		@Body() jsonRpcUserOperationDto: JsonRpcUserOperationDto
 	) : Promise<JsonRpcResponseDto> {
 		try {
-			const result = await this.blockchainService.sendUserOperations(
+			const txHash = await this.blockchainService.sendUserOperations(
 				jsonRpcUserOperationDto.params
 			);
 
 			return {
 				jsonrpc: '2.0',
+				id: jsonRpcUserOperationDto.id,
 				method: 'eth_sendUserOperation',
-				result
+				result: {
+					txHash,
+					status: 'submitted'
+				}
 			};
 		} catch (e) {
 			this.logger.warn(e);
