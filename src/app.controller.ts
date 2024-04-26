@@ -1,8 +1,15 @@
-import { Hex, BaseError } from 'viem';
+import { BaseError } from 'viem';
 
 import { Logger } from '@nestjs/common';
 
-import { Controller, Post, Body, UseFilters, InternalServerErrorException } from '@nestjs/common';
+import {
+	Controller,
+	Post,
+	Body,
+	UseFilters,
+	InternalServerErrorException,
+	BadRequestException,
+} from '@nestjs/common';
 
 import { ConfigService } from '@nestjs/config';
 
@@ -41,6 +48,9 @@ export class AppController {
 			};
 		} catch (e) {
 			this.logger.warn(e);
+
+			if (e instanceof BaseError)
+				throw new BadRequestException(e.shortMessage);
 			throw new InternalServerErrorException('Internal error');
 		}
 	}
