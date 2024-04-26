@@ -34,7 +34,7 @@ export class BlockchainService {
 			chain: this.viemService.getChain(),
 			args: [
 				userOperations,
-				'0x962718024f19A40959Dc25f1546216b3293F1DA1'
+				this.viemService.getBeneficiary()
 			]
 		});
 
