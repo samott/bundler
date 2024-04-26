@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 
 import {
 	Address,
@@ -15,6 +15,8 @@ import { UserOperationDto } from './dto/user-operation.dto';
 
 @Injectable()
 export class BlockchainService {
+	private readonly logger = new Logger(BlockchainService.name);
+
 	constructor(
 		readonly viemService: ViemService,
 	) {};
@@ -22,6 +24,8 @@ export class BlockchainService {
 	async sendUserOperations(
 		userOperations: UserOperationDto[],
 	) : Promise<TransactionReceipt> {
+		this.logger.log('Forwarding user operations...', userOperations);
+
 		const txHash = await this.viemService.writeContract({
 			address: this.viemService.getEntryPoint(),
 			abi: erc4337Abi as Abi,

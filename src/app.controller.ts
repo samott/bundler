@@ -1,4 +1,6 @@
-import { Hex } from 'viem';
+import { Hex, BaseError } from 'viem';
+
+import { Logger } from '@nestjs/common';
 
 import { Controller, Post, Body, UseFilters, InternalServerErrorException } from '@nestjs/common';
 
@@ -16,6 +18,8 @@ import {
 @Controller()
 @UseFilters(JsonRpcExceptionFilter)
 export class AppController {
+	private readonly logger = new Logger(AppController.name);
+
 	constructor(
 		private readonly configService: ConfigService,
 		private readonly blockchainService: BlockchainService
@@ -27,8 +31,7 @@ export class AppController {
 	) : Promise<JsonRpcResponseDto> {
 		try {
 			const result = await this.blockchainService.sendUserOperations(
-				jsonRpcUserOperationDto.params,
-				this.configService.get<string>('entryPoint') as Hex
+				jsonRpcUserOperationDto.params
 			);
 
 			return {
@@ -37,6 +40,7 @@ export class AppController {
 				result
 			};
 		} catch (e) {
+			this.logger.warn(e);
 			throw new InternalServerErrorException('Internal error');
 		}
 	}
