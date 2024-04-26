@@ -45,8 +45,8 @@ export class JsonRpcExceptionFilter implements ExceptionFilter {
 					error,
 					details: JSON.stringify(
 						exception.getResponse()
-							?? 'Unknown error'
-					)
+							?? 'Unknown error',
+					(_, v) => typeof v === 'bigint' ? v.toString() : v)
 				}
 			});
 	}
