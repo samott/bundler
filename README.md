@@ -6,6 +6,11 @@
 $ npm install
 ```
 
+## Configuration
+
+Fill in `config/default.yaml`. The test user must be ready to handle
+user ops for testing (e.g. have funds for gas).
+
 ## Running the app
 
 ```bash
@@ -27,7 +32,4 @@ $ npm run test
 
 # e2e tests
 $ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
