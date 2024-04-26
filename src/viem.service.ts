@@ -1,3 +1,5 @@
+import { shuffle } from 'fast-shuffle'
+
 import { Injectable } from '@nestjs/common';
 
 import { ConfigService } from '@nestjs/config';
@@ -11,11 +13,13 @@ import {
 	Account,
 	FeeValues,
 	ReadContractParameters,
-    ReadContractReturnType,
+	ReadContractReturnType,
 	WriteContractParameters,
-    WriteContractReturnType,
+	WriteContractReturnType,
 	WaitForTransactionReceiptParameters,
 	WaitForTransactionReceiptReturnType,
+	EstimateContractGasParameters,
+	EstimateContractGasReturnType,
 } from 'viem';
 
 import { privateKeyToAccount } from 'viem/accounts';
@@ -38,7 +42,7 @@ export class ViemService {
 			transport: http(),
 		});
 
-		return client.readContract(params);
+		return await client.readContract(params);
 	}
 
 	async writeContract(
@@ -50,7 +54,18 @@ export class ViemService {
 			transport: http(),
 		}).extend(publicActions);
 
-		return client.writeContract(params);
+		return await client.writeContract(params);
+	}
+	async estimateContractGas(
+		params: EstimateContractGasParameters
+	) : Promise<EstimateContractGasReturnType> {
+		const client = createWalletClient({
+			account: this.getAccount(),
+			chain: sepolia,
+			transport: http(),
+		}).extend(publicActions);
+
+		return await client.estimateContractGas(params);
 	}
 
 	async waitForTransactionReceipt(
@@ -59,7 +74,7 @@ export class ViemService {
 		const client = createPublicClient({
 			chain: sepolia,
 			transport: http(),
-		}).extend(publicActions);
+		});
 
 		return await client.waitForTransactionReceipt(params);
 	}
