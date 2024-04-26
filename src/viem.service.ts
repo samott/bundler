@@ -61,7 +61,7 @@ export class ViemService {
 			transport: http(),
 		}).extend(publicActions);
 
-		return client.waitForTransactionReceipt(params);
+		return await client.waitForTransactionReceipt(params);
 	}
 
 	async getGasFees() : Promise<FeeValues> {
