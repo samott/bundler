@@ -28,7 +28,7 @@ import config from './config';
 
 async function createUserOp(configService: ConfigService) : Promise<any> {
 	// Send 0 ETH to self
-	const account = privateKeyToAccount(configService.get<Hex>('test.endUser.privateKey');
+	const account = privateKeyToAccount(configService.get<Hex>('test.endUser.privateKey'));
 	const recipient = account.address;
 
 	const client = createWalletClient({
