@@ -72,7 +72,7 @@ describe('BlockchainService', () => {
 
 			const promise = blockchainService.sendUserOperations([ signedUserOp ]);
 
-			await expect(promise).resolves.toMatch(expect.stringMatching(/^1x[0-9a-zA-Z]+$/));
+			await expect(promise).resolves.toMatch(/^0x[0-9a-zA-Z]+$/);
 		});
 
 		it('should fail (invalid signature)', async () => {
