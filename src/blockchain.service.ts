@@ -37,7 +37,7 @@ export class BlockchainService {
 			account,
 			args: [
 				userOperations,
-				this.viemService.getBeneficiary()
+				this.viemService.getBeneficiary().address
 			]
 		});
 

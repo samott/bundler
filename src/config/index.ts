@@ -13,8 +13,10 @@ const ConfigSchema = Joi.object({
 	onChain: Joi.object({
 		chainName: Joi.string().valid(...Object.keys(chains)),
 		entryPoint: Joi.string().regex(/^0x[a-fA-F0-9]{40}$/).required(),
-		privateKeys: Joi.array().min(1).items(Joi.string().regex(/^0x[a-fA-F0-9]{64}$/).required()),
-		beneficiary: Joi.string().regex(/^0x[a-fA-F0-9]{40}$/).required(),
+		hdKey: Joi.object({
+			seed: Joi.string().regex(/^0x[a-fA-F0-9]{1,}$/).required(),
+		}).required(),
+		maxAccounts: Joi.number().integer().min(1).required(),
 	}).required(),
 	test: Joi.object({
 		endUser: Joi.object({
