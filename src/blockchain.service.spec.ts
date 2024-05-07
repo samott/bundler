@@ -21,29 +21,30 @@ import { createUserOp } from './test/utils';
 
 import config from './config';
 
-async function writeContractMock(
-	params: WriteContractParameters
-) : Promise<WriteContractReturnType> {
-	const client = createPublicClient({
-		chain: sepolia,
-		transport: http(),
-	});
-
-	await client.simulateContract({
-		...params,
-		account: this.getAccount()
-	});
-
-	const txHash = '0x' + crypto.randomBytes(32).toString("hex");
-
-	return txHash as Hex;
-}
-
 describe('BlockchainService', () => {
 	let module: TestingModule;
 	let blockchainService: BlockchainService;
 	let viemService: ViemService;
 	let configService: ConfigService;
+
+	async function writeContractMock(
+		params: WriteContractParameters
+	) : Promise<WriteContractReturnType> {
+		const client = createPublicClient({
+			chain: sepolia,
+			transport: http(),
+		});
+
+		await client.simulateContract({
+			...params,
+			chain: sepolia,
+			account: viemService.getAccount()
+		});
+
+		const txHash = '0x' + crypto.randomBytes(32).toString("hex");
+
+		return txHash as Hex;
+	}
 
 	beforeEach(async () => {
 		module = await Test.createTestingModule({
