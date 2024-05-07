@@ -9,6 +9,7 @@ import {
 	createWalletClient,
 	publicActions,
 	http,
+	Chain,
 	Hex,
 	Account,
 	FeeValues,
@@ -24,9 +25,7 @@ import {
 
 import { privateKeyToAccount } from 'viem/accounts';
 
-import {
-	sepolia
-} from 'viem/chains';
+import * as chains from 'viem/chains';
 
 @Injectable()
 export class ViemService {
@@ -38,7 +37,7 @@ export class ViemService {
 		params: ReadContractParameters
 	) : Promise<ReadContractReturnType> {
 		const client = createPublicClient({
-			chain: sepolia,
+			chain: this.getChain(),
 			transport: http(),
 		});
 
@@ -50,7 +49,7 @@ export class ViemService {
 	) : Promise<WriteContractReturnType> {
 		const client = createWalletClient({
 			account: this.getAccount(),
-			chain: sepolia,
+			chain: this.getChain(),
 			transport: http(),
 		}).extend(publicActions);
 
@@ -61,7 +60,7 @@ export class ViemService {
 	) : Promise<EstimateContractGasReturnType> {
 		const client = createWalletClient({
 			account: this.getAccount(),
-			chain: sepolia,
+			chain: this.getChain(),
 			transport: http(),
 		}).extend(publicActions);
 
@@ -72,7 +71,7 @@ export class ViemService {
 		params: WaitForTransactionReceiptParameters
 	) : Promise<WaitForTransactionReceiptReturnType> {
 		const client = createPublicClient({
-			chain: sepolia,
+			chain: this.getChain(),
 			transport: http(),
 		});
 
@@ -81,7 +80,7 @@ export class ViemService {
 
 	async getGasFees() : Promise<FeeValues> {
 		const client = createPublicClient({
-			chain: sepolia,
+			chain: this.getChain(),
 			transport: http(),
 		});
 
@@ -103,7 +102,8 @@ export class ViemService {
 		return this.configService.get<string>('onChain.beneficiary') as Hex;
 	}
 
-	getChain() {
-		return sepolia;
+	getChain() : Chain {
+		const chainName = this.configService.get<string>('onChain.chainName') as keyof typeof chains;
+		return chains[chainName];
 	}
 }

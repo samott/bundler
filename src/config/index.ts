@@ -4,11 +4,14 @@ import { join } from 'path';
 
 import * as Joi from 'joi';
 
+import * as chains from 'viem/chains';
+
 const ConfigSchema = Joi.object({
 	app: Joi.object({
 		port: Joi.number().required(),
 	}).required(),
 	onChain: Joi.object({
+		chainName: Joi.string().valid(...Object.keys(chains)),
 		entryPoint: Joi.string().regex(/^0x[a-fA-F0-9]{40}$/).required(),
 		privateKeys: Joi.array().min(1).items(Joi.string().regex(/^0x[a-fA-F0-9]{64}$/).required()),
 		beneficiary: Joi.string().regex(/^0x[a-fA-F0-9]{40}$/).required(),
