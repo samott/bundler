@@ -1,4 +1,4 @@
-# Biconomy Bundler Service
+# ERC4337 Bundler Service
 
 ## Installation
 
