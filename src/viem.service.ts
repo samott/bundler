@@ -1,5 +1,3 @@
-import { shuffle } from 'fast-shuffle'
-
 import { Injectable } from '@nestjs/common';
 
 import { ConfigService } from '@nestjs/config';
@@ -12,6 +10,7 @@ import {
 	Chain,
 	Hex,
 	Account,
+	PublicClient,
 	FeeValues,
 	ReadContractParameters,
 	ReadContractReturnType,
@@ -29,19 +28,22 @@ import * as chains from 'viem/chains';
 
 @Injectable()
 export class ViemService {
+	private publicClient: PublicClient;
+
 	constructor(
 		private readonly configService: ConfigService
-	) {}
+	) {
+		this.publicClient = createPublicClient({
+			chain: this.getChain(),
+			transport: http(),
+		});
+	}
 
 	async readContract(
 		params: ReadContractParameters
 	) : Promise<ReadContractReturnType> {
-		const client = createPublicClient({
-			chain: this.getChain(),
-			transport: http(),
-		});
 
-		return await client.readContract(params);
+		return await this.publicClient.readContract(params);
 	}
 
 	async writeContract(
@@ -70,21 +72,11 @@ export class ViemService {
 	async waitForTransactionReceipt(
 		params: WaitForTransactionReceiptParameters
 	) : Promise<WaitForTransactionReceiptReturnType> {
-		const client = createPublicClient({
-			chain: this.getChain(),
-			transport: http(),
-		});
-
-		return await client.waitForTransactionReceipt(params);
+		return await this.publicClient.waitForTransactionReceipt(params);
 	}
 
 	async getGasFees() : Promise<FeeValues> {
-		const client = createPublicClient({
-			chain: this.getChain(),
-			transport: http(),
-		});
-
-		const feeData = await client.estimateFeesPerGas();
+		const feeData = await this.publicClient.estimateFeesPerGas();
 		return feeData;
 	}
 
