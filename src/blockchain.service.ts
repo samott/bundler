@@ -35,7 +35,6 @@ export class BlockchainService {
 			abi: erc4337Abi as Abi,
 			functionName: 'handleOps',
 			account,
-			chain: this.viemService.getChain(),
 			args: [
 				userOperations,
 				this.viemService.getBeneficiary()

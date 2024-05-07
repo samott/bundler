@@ -90,7 +90,7 @@ export class ViemService {
 	}
 
 	getAccount() : Account {
-		const privateKeys = this.configService.get<Hex[]>('onChain.privateKeys');
+		const privateKeys = this.configService.get<Hex[]>('onChain.privateKeys') as Hex[];
 		const index = Math.floor(Math.random() * privateKeys.length);
 		return privateKeyToAccount(privateKeys[index]);
 	}
